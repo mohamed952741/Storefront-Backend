@@ -1,6 +1,6 @@
 import supertest from 'supertest';
-import app from '../server';
-import Client from '../database';
+import app from '../../server';
+import Connection from '../../database';
 import * as dotenv from 'dotenv';
 
 let token: string;
@@ -8,9 +8,9 @@ const request = supertest(app);
 dotenv.config();
 describe('Test Order endpoints', () => {
   afterAll(async () => {
-    const conn = await Client.connect();
+    const conn = await Connection.connect();
     const sql =
-      'TRUNCATE order_products RESTART IDENTITY CASCADE;\nTRUNCATE products RESTART IDENTITY CASCADE;\nTRUNCATE orders RESTART IDENTITY CASCADE;\nTRUNCATE users RESTART IDENTITY CASCADE; ';
+      'TRUNCATE order_item RESTART IDENTITY CASCADE;\nTRUNCATE product RESTART IDENTITY CASCADE;\nTRUNCATE orders RESTART IDENTITY CASCADE;\nTRUNCATE users RESTART IDENTITY CASCADE; ';
     await conn.query(sql);
     conn.release();
   });
@@ -31,7 +31,7 @@ describe('Test Order endpoints', () => {
     const response = await request
       .get('/store/orders')
       .set('Authorization', `Bearer ${token}`);
-    expect(response.body.message).toBe('Retrieved order successfully');
+    expect(response.body.message).toBe('Order retrieved successfully');
   });
   it('test addProduct endpoint', async () => {
     await request
@@ -43,7 +43,7 @@ describe('Test Order endpoints', () => {
       .send('quantity=1&productId=1')
       .set('Authorization', `Bearer ${token}`);
     expect(response.body.message).toBe(
-      'Successfully added product to the order'
+      'Successfully added a product to the order'
     );
   });
 });

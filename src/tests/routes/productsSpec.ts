@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 import app from '../../server';
-import Client from '../../database';
+import Connection from '../../database';
 import * as dotenv from 'dotenv';
 let token: string;
 
@@ -9,9 +9,9 @@ dotenv.config();
 
 describe('Test Product endpoints', () => {
   afterAll(async () => {
-    const conn = await Client.connect();
+    const conn = await Connection.connect();
     const sql =
-      'TRUNCATE users RESTART IDENTITY CASCADE;\nTRUNCATE products RESTART IDENTITY CASCADE; ';
+      'TRUNCATE users RESTART IDENTITY CASCADE;\nTRUNCATE product RESTART IDENTITY CASCADE; ';
     await conn.query(sql);
     conn.release();
   });
@@ -38,7 +38,7 @@ describe('Test Product endpoints', () => {
   });
   it('test filterByCategory endpoint', async () => {
     const response = await request.get('/store/filter?category=dummy');
-    expect(response.body.message).toEqual('Successfully filtered category');
+    expect(response.body.message).toEqual('Successfully filtered category by dummy');
   });
   it('test update endpoint', async () => {
     const response = await request

@@ -1,5 +1,5 @@
-import { Product, ProductStore } from '../product';
-import Client from '../../database';
+import { Product, ProductStore } from '../../model/product';
+import Connection from '../../database';
 
 const store = new ProductStore();
 
@@ -40,8 +40,8 @@ describe('Test Product Model Logic', () => {
     category: 'dummy updated',
   };
   afterAll(async () => {
-    const conn = await Client.connect();
-    const sql = 'TRUNCATE products RESTART IDENTITY CASCADE; ';
+    const conn = await Connection.connect();
+    const sql = 'TRUNCATE product RESTART IDENTITY CASCADE; ';
     await conn.query(sql);
     conn.release();
   });

@@ -11,7 +11,7 @@ export class ProductStore {
   async index(): Promise<Product[]> {
     try {
       const conn = await Connection.connect();
-      const sql = 'SELECT * FROM products';
+      const sql = 'SELECT * FROM product';
       const result = await conn.query(sql);
       conn.release();
       return result.rows;
@@ -22,7 +22,7 @@ export class ProductStore {
   async show(id: number): Promise<Product> {
     try {
       const conn = await Connection.connect();
-      const sql = `SELECT * FROM products WHERE id = ${id}`;
+      const sql = `SELECT * FROM product WHERE id = ${id}`;
     
       const result = await conn.query(sql);
       conn.release();
@@ -37,7 +37,7 @@ export class ProductStore {
   async create(p: Product): Promise<Product> {
     try {
       const conn = await Connection.connect();
-      const sql = `INSERT INTO products (name, description, price,category) VALUES ('${p.name}', '${p.description}', ${p.price},'${p.category}') RETURNING *`;
+      const sql = `INSERT INTO product (name, description, price,category) VALUES ('${p.name}', '${p.description}', ${p.price},'${p.category}') RETURNING *`;
       const result = await conn.query(sql);
       conn.release();
       return result.rows[0];
@@ -48,7 +48,7 @@ export class ProductStore {
   async update(p: Product): Promise<Product> {
     try {
       const conn = await Connection.connect();
-      const sql = `UPDATE products SET name = '${p.name}', description = '${p.description}', price = ${p.price}, category = '${p.category}' WHERE id=${p.id} RETURNING *`;
+      const sql = `UPDATE product SET name = '${p.name}', description = '${p.description}', price = ${p.price}, category = '${p.category}' WHERE id=${p.id} RETURNING *`;
       const result = await conn.query(sql);
       conn.release();
       return result.rows[0];
@@ -59,7 +59,7 @@ export class ProductStore {
   async delete(id: number): Promise<Product> {
     try {
       const conn = await Connection.connect();
-      const sql = `DELETE FROM products WHERE id=${id} RETURNING *`;
+      const sql = `DELETE FROM product WHERE id=${id} RETURNING *`;
       const result = await conn.query(sql);
       conn.release();
       return result.rows[0];
@@ -70,13 +70,13 @@ export class ProductStore {
   async filterByCategory(category: string): Promise<Product[]> {
     try {
       const conn = await Connection.connect();
-      const sql = `SELECT * FROM products WHERE category='${category}'`;
+      const sql = `SELECT * FROM product WHERE category='${category}'`;
       const result = await conn.query(sql);
       conn.release();
       return result.rows;
     } catch (error) {
       throw new Error(
-        `Could not find product by category ${category}: ${error}`
+        `Could not find product by the category ${category}: ${error}`
       );
     }
   }

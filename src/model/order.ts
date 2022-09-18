@@ -33,7 +33,7 @@ export class OrderStore {
     productId: number
   ): Promise<Order> {
     try {
-      const sql = `INSERT INTO order_products (quantity, order_id, product_id) VALUES(${quantity}, ${orderId}, ${productId}) RETURNING *`;
+      const sql = `INSERT INTO order_item (quantity, order_id, product_id) VALUES(${quantity}, ${orderId}, ${productId}) RETURNING *`;
       const conn = await Connection.connect();
       const result = await conn.query(sql);
 

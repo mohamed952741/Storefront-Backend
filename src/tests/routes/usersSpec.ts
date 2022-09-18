@@ -1,6 +1,6 @@
 import supertest from 'supertest';
-import app from '../server';
-import Client from '../database';
+import app from '../../server';
+import Connection from '../../database';
 import * as dotenv from 'dotenv';
 
 const request = supertest(app);
@@ -9,7 +9,7 @@ let token: string;
 
 describe('Test User endpoints', () => {
   afterAll(async () => {
-    const conn = await Client.connect();
+    const conn = await Connection.connect();
     const sql = 'TRUNCATE users RESTART IDENTITY CASCADE; ';
     await conn.query(sql);
     conn.release();

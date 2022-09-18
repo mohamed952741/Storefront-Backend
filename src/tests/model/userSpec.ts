@@ -1,5 +1,5 @@
-import { User, UserStore } from '../user';
-import Client from '../../database';
+import { User, UserStore } from '../../model/user';
+import Connection from '../../database';
 const store = new UserStore();
 
 describe('Test User Model methods', () => {
@@ -26,7 +26,7 @@ describe('Test User Model Logic', () => {
     password: 'password',
   };
   afterAll(async () => {
-    const conn = await Client.connect();
+    const conn = await Connection.connect();
     const sql = 'TRUNCATE users RESTART IDENTITY CASCADE; ';
     await conn.query(sql);
     conn.release();

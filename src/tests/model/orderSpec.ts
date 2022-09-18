@@ -1,7 +1,7 @@
-import { Order, OrderStore } from '../order';
-import { User, UserStore } from '../user';
-import { Product, ProductStore } from '../product';
-import Client from '../../database';
+import { Order, OrderStore } from '../../model/order';
+import { User, UserStore } from '../../model/user';
+import { Product, ProductStore } from '../../model/product';
+import Connection from '../../database';
 
 const store = new OrderStore();
 const user_store = new UserStore();
@@ -44,9 +44,9 @@ describe('Test Order Model method Logic', () => {
     await product_store.create(product);
   });
   afterAll(async () => {
-    const conn = await Client.connect();
+    const conn = await Connection.connect();
     const sql =
-      'TRUNCATE order_products RESTART IDENTITY CASCADE;\nTRUNCATE users RESTART IDENTITY CASCADE;\nTRUNCATE orders RESTART IDENTITY CASCADE;\nTRUNCATE products RESTART IDENTITY CASCADE;';
+      'TRUNCATE order_item RESTART IDENTITY CASCADE;\nTRUNCATE users RESTART IDENTITY CASCADE;\nTRUNCATE orders RESTART IDENTITY CASCADE;\nTRUNCATE product RESTART IDENTITY CASCADE;';
     await conn.query(sql);
     conn.release();
   });
