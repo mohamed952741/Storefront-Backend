@@ -262,7 +262,23 @@
   password varchar(255) NOT NULL
   );
 ```
+```bash
+                                     Table "public.users"
+  Column   |          Type          | Collation | Nullable |              Default
+-----------+------------------------+-----------+----------+-----------------------------------
+ id        | integer                |           | not null | nextval('users_id_seq'::regclass)
+ firstname | character varying(100) |           | not null |
+ lastname  | character varying(100) |           | not null |
+ email     | character varying(100) |           | not null |
+ username  | character varying(100) |           | not null |
+ password  | character varying(255) |           | not null |
+Indexes:
+    "users_pkey" PRIMARY KEY, btree (id)
+    "users_email_key" UNIQUE CONSTRAINT, btree (email)
+Referenced by:
+    TABLE "orders" CONSTRAINT "orders_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(id)
 
+```
 # Product Schema
 
 ```bash
@@ -274,6 +290,20 @@
   category VARCHAR(255) NOT NULL
   );
 ```
+```bash
+                                      Table "public.product"
+   Column    |          Type          | Collation | Nullable |               Default
+-------------+------------------------+-----------+----------+-------------------------------------
+ id          | integer                |           | not null | nextval('product_id_seq'::regclass)
+ name        | character varying(255) |           | not null |
+ description | character varying(255) |           | not null |
+ price       | integer                |           | not null |
+ category    | character varying(255) |           | not null |
+Indexes:
+    "product_pkey" PRIMARY KEY, btree (id)
+Referenced by:
+    TABLE "order_item" CONSTRAINT "order_item_product_id_fkey" FOREIGN KEY (product_id) REFERENCES product(id)
+```
 
 # Order Schema
 
@@ -283,6 +313,20 @@
   status VARCHAR(50),
   user_id bigint REFERENCES users(id) NOT NULL
   );
+```
+```bash
+                                    Table "public.orders"
+ Column  |         Type          | Collation | Nullable |              Default
+---------+-----------------------+-----------+----------+------------------------------------
+ id      | integer               |           | not null | nextval('orders_id_seq'::regclass)
+ status  | character varying(50) |           |          |
+ user_id | bigint                |           | not null |
+Indexes:
+    "orders_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "orders_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(id)
+Referenced by:
+    TABLE "order_item" CONSTRAINT "order_item_order_id_fkey" FOREIGN KEY (order_id) REFERENCES orders(id)
 ```
 
 # Order-Item Schema
@@ -295,6 +339,22 @@
   quantity INTEGER
   );
 ```
+```bash
+                              Table "public.order_item"
+   Column   |  Type   | Collation | Nullable |                Default
+------------+---------+-----------+----------+----------------------------------------
+ id         | integer |           | not null | nextval('order_item_id_seq'::regclass)
+ order_id   | bigint  |           | not null |
+ product_id | bigint  |           | not null |
+ quantity   | integer |           |          |
+Indexes:
+    "order_item_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "order_item_order_id_fkey" FOREIGN KEY (order_id) REFERENCES orders(id)
+    "order_item_product_id_fkey" FOREIGN KEY (product_id) REFERENCES product(id)
+
+```
+
 
 ## Data Shapes/Yypes
 
