@@ -41,10 +41,5 @@ describe('Test User endpoints', () => {
       .set('Authorization', `Bearer ${token}`);
     expect(response.status).toEqual(200);
   });
-  it('test authentication endpoint', async () => {
-    const response = await request
-      .post('/store/users/authenticate')
-      .send('username=username&password=password');
-    expect(JSON.stringify(response.body)).toEqual(JSON.stringify(token));
-  });
+  
 });
